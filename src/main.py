@@ -129,7 +129,7 @@ for idx, col in enumerate(target_candidates):
     axes[idx].grid(True, alpha=0.3)
 
 plt.tight_layout()
-plt.savefig('distributions_variables_cibles.png', dpi=300, bbox_inches='tight')
+plt.savefig('../results/distributions_variables_cibles.png', dpi=300, bbox_inches='tight')
 print("✓ Graphique sauvegardé : distributions_variables_cibles.png")
 plt.show()
 
@@ -236,7 +236,7 @@ plt.axvline(df_clean['num_tokens'].mean(), color='red', linestyle='--',
             label=f'Moyenne = {df_clean["num_tokens"].mean():.1f}')
 plt.legend()
 plt.tight_layout()
-plt.savefig('distribution_tokens.png', dpi=300, bbox_inches='tight')
+plt.savefig('../results/distribution_tokens.png', dpi=300, bbox_inches='tight')
 print("\n✓ Graphique sauvegardé : distribution_tokens.png")
 plt.show()
 
@@ -267,7 +267,7 @@ plt.xlabel('Fréquence')
 plt.ylabel('Token')
 plt.grid(True, alpha=0.3, axis='x')
 plt.tight_layout()
-plt.savefig('top_tokens.png', dpi=300, bbox_inches='tight')
+plt.savefig('../results/top_tokens.png', dpi=300, bbox_inches='tight')
 print("\n✓ Graphique sauvegardé : top_tokens.png")
 plt.show()
 
@@ -300,7 +300,7 @@ plt.ylabel('Nombre de tokens')
 plt.grid(True, alpha=0.3)
 
 plt.tight_layout()
-plt.savefig('distribution_frequences.png', dpi=300, bbox_inches='tight')
+plt.savefig('../results/distribution_frequences.png', dpi=300, bbox_inches='tight')
 print("\n✓ Graphique sauvegardé : distribution_frequences.png")
 plt.show()
 
@@ -407,7 +407,7 @@ plt.xlabel('Importance')
 plt.title('Importance des features (Random Forest)', fontweight='bold')
 plt.grid(True, alpha=0.3, axis='x')
 plt.tight_layout()
-plt.savefig('feature_importance_baseline.png', dpi=300, bbox_inches='tight')
+plt.savefig('../results/feature_importance_baseline.png', dpi=300, bbox_inches='tight')
 print("\n✓ Graphique sauvegardé : feature_importance_baseline.png")
 plt.show()
 
@@ -422,7 +422,7 @@ plt.title('Prédictions vs Valeurs réelles (Test set)', fontweight='bold')
 plt.legend()
 plt.grid(True, alpha=0.3)
 plt.tight_layout()
-plt.savefig('predictions_baseline.png', dpi=300, bbox_inches='tight')
+plt.savefig('../results/predictions_baseline.png', dpi=300, bbox_inches='tight')
 print("✓ Graphique sauvegardé : predictions_baseline.png")
 plt.show()
 
@@ -767,7 +767,7 @@ axes[1].set_title(f'Avec Embeddings (R²={r2_with_text:.4f})', fontweight='bold'
 axes[1].grid(True, alpha=0.3)
 
 plt.tight_layout()
-plt.savefig('comparison_baseline_embeddings.png', dpi=300, bbox_inches='tight')
+plt.savefig('../results/comparison_baseline_embeddings.png', dpi=300, bbox_inches='tight')
 print("\n✓ Graphique sauvegardé : comparison_baseline_embeddings.png")
 plt.show()
 
