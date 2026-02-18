@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 
 # Visualisation
+import matplotlib
+matplotlib.use('Agg')  # Mode non-interactif (pas d'affichage)
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -47,7 +49,7 @@ print("✓ Imports terminés !")
 # ÉTAPE 1 : CHARGEMENT DES DONNÉES
 # ===========================
 
-print("=== CHARGEMENT DES DONNÉES ===\n")
+print("=== DÉBUT DU TP : CHARGEMENT DES DONNÉES ===\n")
 
 # Chargement du dataset principal
 df = pd.read_csv('../data/movies_metadata.csv', low_memory=False)
@@ -73,12 +75,10 @@ print("\n=== VALEURS MANQUANTES ===")
 missing = df.isnull().sum()
 missing = missing[missing > 0].sort_values(ascending=False)
 print(missing)
-print(f"\nPourcentage de valeurs manquantes par colonne :")
-print((missing / len(df) * 100).round(2))
 
 # Focus sur la colonne 'overview' (descriptions)
 print("\n=== ANALYSE DE LA COLONNE 'overview' ===")
-print(f"Descriptions manquantes : {df['overview'].isnull().sum()} ({df['overview'].isnull().sum()/len(df)*100:.2f}%)")
+print(f"Descriptions manquantes : {df['overview'].isnull().sum()}")
 print(f"Descriptions présentes : {df['overview'].notna().sum()}")
 
 # Exemples de descriptions
@@ -113,7 +113,7 @@ for col in target_candidates:
     print(f"  Max     : {df[col].max():.2f}")
     print(f"  Moyenne : {df[col].mean():.2f}")
     print(f"  Médiane : {df[col].median():.2f}")
-    print(f"  Std     : {df[col].std():.2f}")
+    print(f"  Écart-type     : {df[col].std():.2f}")
     print(f"  NaN     : {df[col].isnull().sum()}")
     print()
 
@@ -130,7 +130,7 @@ for idx, col in enumerate(target_candidates):
 
 plt.tight_layout()
 plt.savefig('../results/distributions_variables_cibles.png', dpi=300, bbox_inches='tight')
-print("✓ Graphique sauvegardé : distributions_variables_cibles.png")
+print("Graphique sauvegardé : distributions_variables_cibles.png")
 plt.show()
 
 # Remarques sur les distributions
@@ -203,7 +203,7 @@ print(f"Films supprimés (NaN) : {len(df) - len(df_clean)}\n")
 # Appliquer le preprocessing
 print("Preprocessing en cours...")
 df_clean['tokens'] = df_clean['overview'].apply(preprocess)
-print("✓ Preprocessing terminé !\n")
+print("Preprocessing terminé !\n")
 
 # Exemples avant/après
 print("=== EXEMPLES AVANT/APRÈS PREPROCESSING ===\n")
@@ -222,7 +222,7 @@ print(f"Moyenne  : {df_clean['num_tokens'].mean():.2f}")
 print(f"Médiane  : {df_clean['num_tokens'].median():.2f}")
 print(f"Min      : {df_clean['num_tokens'].min()}")
 print(f"Max      : {df_clean['num_tokens'].max()}")
-print(f"Std      : {df_clean['num_tokens'].std():.2f}")
+print(f"Écart-type      : {df_clean['num_tokens'].std():.2f}")
 
 # Histogramme nombre de tokens
 plt.figure(figsize=(12, 5))
@@ -268,7 +268,7 @@ plt.ylabel('Token')
 plt.grid(True, alpha=0.3, axis='x')
 plt.tight_layout()
 plt.savefig('../results/top_tokens.png', dpi=300, bbox_inches='tight')
-print("\n✓ Graphique sauvegardé : top_tokens.png")
+print("\n Graphique sauvegardé : top_tokens.png")
 plt.show()
 
 # Distribution des fréquences
@@ -301,7 +301,7 @@ plt.grid(True, alpha=0.3)
 
 plt.tight_layout()
 plt.savefig('../results/distribution_frequences.png', dpi=300, bbox_inches='tight')
-print("\n✓ Graphique sauvegardé : distribution_frequences.png")
+print("\n Graphique sauvegardé : distribution_frequences.png")
 plt.show()
 
 # Exemples de tokens rares
@@ -311,11 +311,11 @@ print(rare_tokens[:30])
 
 # Sauvegarde
 df_clean.to_csv('../data/movies_preprocessed.csv', index=False)
-print(f"\n✓ Dataset preprocessed sauvegardé : ../data/movies_preprocessed.csv")
+print(f"\n Dataset preprocessed sauvegardé : ../data/movies_preprocessed.csv")
 
 vocab_df = pd.DataFrame(token_counts.most_common(), columns=['token', 'frequency'])
 vocab_df.to_csv('../data/vocabulary.csv', index=False)
-print(f"✓ Vocabulaire sauvegardé : ../data/vocabulary.csv ({len(vocab_df)} tokens)\n")
+print(f" Vocabulaire sauvegardé : ../data/vocabulary.csv ({len(vocab_df)} tokens)\n")
 
 # ===========================
 # ÉTAPE 4 : MODÈLE ML CLASSIQUE (SANS TEXTE)
@@ -375,7 +375,7 @@ print("Modèle : Random Forest Regressor")
 model = RandomForestRegressor(n_estimators=100, random_state=42, n_jobs=-1)
 model.fit(X_train_scaled, y_train)
 
-print("✓ Modèle entraîné !\n")
+print(" Modèle entraîné !\n")
 
 # Prédictions
 y_pred_train = model.predict(X_train_scaled)
@@ -408,7 +408,7 @@ plt.title('Importance des features (Random Forest)', fontweight='bold')
 plt.grid(True, alpha=0.3, axis='x')
 plt.tight_layout()
 plt.savefig('../results/feature_importance_baseline.png', dpi=300, bbox_inches='tight')
-print("\n✓ Graphique sauvegardé : feature_importance_baseline.png")
+print("\n Graphique sauvegardé : feature_importance_baseline.png")
 plt.show()
 
 # Graphique prédictions vs réelles
@@ -423,12 +423,8 @@ plt.legend()
 plt.grid(True, alpha=0.3)
 plt.tight_layout()
 plt.savefig('../results/predictions_baseline.png', dpi=300, bbox_inches='tight')
-print("✓ Graphique sauvegardé : predictions_baseline.png")
+print(" Graphique sauvegardé : predictions_baseline.png")
 plt.show()
-
-print("\n" + "="*60)
-print("Baseline établie ! Maintenant on va ajouter les embeddings.")
-print("="*60)
 
 # ===========================
 # ÉTAPE 5 : WORD2VEC EMBEDDINGS
@@ -461,7 +457,7 @@ model_raw = Word2Vec(
     sg=1                  # Skip-gram (meilleur pour petit corpus)
 )
 
-print(f"✓ Modèle entraîné !")
+print(f" Modèle entraîné !")
 print(f"Taille du vocabulaire (min_count=1) : {len(model_raw.wv)}\n")
 
 # Exemples de mots similaires
@@ -499,7 +495,7 @@ model_clean = Word2Vec(
     epochs=10             # Plus d'itérations pour mieux apprendre
 )
 
-print(f"✓ Modèle entraîné !")
+print(f" Modèle entraîné !")
 print(f"Taille du vocabulaire (min_count=5) : {len(model_clean.wv)}")
 print(f"Réduction : {len(model_raw.wv)} → {len(model_clean.wv)} mots")
 print(f"Pourcentage gardé : {len(model_clean.wv)/len(model_raw.wv)*100:.1f}%\n")
@@ -535,7 +531,7 @@ for word in example_words:
 
 # Sauvegarde du modèle
 model_clean.save("../data/word2vec_model.bin")
-print("\n✓ Modèle Word2Vec sauvegardé : ../data/word2vec_model.bin")
+print("\n Modèle Word2Vec sauvegardé : ../data/word2vec_model.bin")
 
 print("\n=== REMARQUES ===")
 print("""
@@ -608,7 +604,7 @@ for tokens in df_clean['tokens']:
 
 doc_vectors = np.array(doc_vectors)
 
-print(f"✓ Vecteurs créés !")
+print(f" Vecteurs créés !")
 print(f"Shape : {doc_vectors.shape}")
 print(f"  {doc_vectors.shape[0]} films")
 print(f"  {doc_vectors.shape[1]} dimensions par film")
@@ -675,7 +671,7 @@ X_test_scaled = scaler.transform(X_test)
 print("\n=== ENTRAÎNEMENT ===")
 model_with_text = RandomForestRegressor(n_estimators=100, random_state=42, n_jobs=-1)
 model_with_text.fit(X_train_scaled, y_train)
-print("✓ Modèle entraîné !\n")
+print(" Modèle entraîné !\n")
 
 # Prédictions
 y_pred_train = model_with_text.predict(X_train_scaled)
@@ -735,9 +731,9 @@ print(f"R² : {r2_improvement:+.2f}%")
 print(f"RMSE : {rmse_improvement:+.2f}%")
 
 if r2_with_text > r2_baseline:
-    print(f"\n✓ Les embeddings AMÉLIORENT le modèle !")
+    print(f"\n Les embeddings AMÉLIORENT le modèle !")
 else:
-    print(f"\n⚠ Les embeddings n'améliorent pas beaucoup...")
+    print(f"\n Les embeddings n'améliorent pas beaucoup...")
     print("Raisons possibles :")
     print("  - Le texte n'est pas très prédictif pour vote_average")
     print("  - Les features numériques sont déjà très bonnes")
@@ -768,9 +764,5 @@ axes[1].grid(True, alpha=0.3)
 
 plt.tight_layout()
 plt.savefig('../results/comparison_baseline_embeddings.png', dpi=300, bbox_inches='tight')
-print("\n✓ Graphique sauvegardé : comparison_baseline_embeddings.png")
+print("\n Graphique sauvegardé : comparison_baseline_embeddings.png")
 plt.show()
-
-print("\n" + "="*60)
-print("FIN DU TP !")
-print("="*60)

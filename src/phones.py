@@ -2,6 +2,8 @@ import os
 import json
 import pandas as pd
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')  # Mode non-interactif (pas d'affichage)
 import matplotlib.pyplot as plt
 import seaborn as sns
 from collections import Counter
@@ -25,12 +27,7 @@ print("=== CHARGEMENT DU DATASET PHONES ===\n")
 
 DATA_PATH = os.path.join(DATA_DIR, 'Cell_Phones_and_Accessories_5.json')
 
-try:
-    df = pd.read_json(DATA_PATH, lines=True)
-    print("✓ Chargé en JSON lines")
-except:
-    df = pd.read_json(DATA_PATH)
-    print("✓ Chargé en JSON classique")
+df = pd.read_json(DATA_PATH, lines=True)
 
 print(f"\nShape : {df.shape}")
 print(f"\nColonnes : {df.columns.tolist()}")
@@ -98,7 +95,7 @@ def preprocess(text):
 print("Preprocessing en cours...")
 df['tokens'] = df['reviewText'].apply(preprocess)
 df['num_tokens'] = df['tokens'].apply(len)
-print("✓ Preprocessing terminé !\n")
+print(" Preprocessing terminé !\n")
 
 # Stats
 print("=== STATISTIQUES TOKENS ===")
@@ -136,7 +133,7 @@ model_w2v = Word2Vec(
     epochs=10
 )
 
-print(f"✓ Modèle entraîné !")
+print(f" Modèle entraîné !")
 print(f"Taille du vocabulaire (min_count=5) : {len(model_w2v.wv):,}\n")
 
 # Mots similaires
@@ -150,4 +147,4 @@ for word in test_words:
             print(f"  {sim_word:15s} : {score:.3f}")
 
 model_w2v.save(os.path.join(DATA_DIR, 'word2vec_phones.bin'))
-print("\n✓ Modèle sauvegardé : data/word2vec_phones.bin")
+print("\n Modèle sauvegardé : data/word2vec_phones.bin")
