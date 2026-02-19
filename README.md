@@ -51,7 +51,7 @@ results/           → Modèles sauvegardés
 **Datasets à télécharger :**
 
 1. **movies_metadata.csv** → [Kaggle - The Movies Dataset](https://www.kaggle.com/datasets/rounakbanik/the-movies-dataset)
-2. **Cell_Phones_and_Accessories_5.json** → [Amazon Reviews](https://nijianmo.github.io/amazon/index.html)
+2. **Cell_Phones_and_Accessories_5.json** → [Amazon Reviews](http://snap.stanford.edu/data/amazon/productGraph/categoryFiles/reviews_Cell_Phones_and_Accessories_5.json.gz)
 
 Placer les fichiers dans le dossier `data/`.
 
